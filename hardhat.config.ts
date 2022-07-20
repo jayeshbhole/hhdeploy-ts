@@ -3,6 +3,7 @@ import { HardhatUserConfig, task } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import "hardhat-deploy";
 import "@nomiclabs/hardhat-solhint";
+import "hardhat-gas-reporter";
 
 dotenv.config();
 
@@ -16,6 +17,25 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 
 const getSecret = (name: string): string => {
     return process.env?.[name] ?? "";
+};
+
+const getNetworkConfig = (network: string) => {
+    const blockexplorers: { [x: string]: string } = {
+        mainnet: "ETHERSCAN",
+        rinketnet: "ETHERSCAN",
+        goerli: "ETHERSCAN",
+        mumbai: "POLYGONSCAN",
+        polygon: "POLYGONSCAN",
+    };
+    return {
+        url: getSecret(`${network.toUpperCase()}_URL`),
+        accounts: getSecret("PRIVATE_KEY") !== undefined ? [getSecret("PRIVATE_KEY")] : [],
+        verify: {
+            etherscan: {
+                apiKey: getSecret(`${blockexplorers[network]}_API_KEY`),
+            },
+        },
+    };
 };
 
 const config: HardhatUserConfig = {
@@ -52,13 +72,7 @@ const config: HardhatUserConfig = {
         },
 
         goerli: {
-            url: getSecret("GOERLI_URL"),
-            accounts: getSecret("PRIVATE_KEY") !== undefined ? [getSecret("PRIVATE_KEY")] : [],
-            // verify: {
-            //     etherscan: {
-            //         apiKey: getSecret("ETHERSCAN_API_KEY"),
-            //     },
-            // },
+            ...getNetworkConfig("goerli"),
         },
 
         rinkeby: {
