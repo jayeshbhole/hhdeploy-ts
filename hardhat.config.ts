@@ -2,6 +2,7 @@ import * as dotenv from "dotenv";
 import { HardhatUserConfig, task } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import "hardhat-deploy";
+import "@nomiclabs/hardhat-solhint";
 
 dotenv.config();
 
@@ -24,7 +25,7 @@ const config: HardhatUserConfig = {
             allowUnlimitedContractSize: true,
             url: "http://localhost:8545",
             accounts: [getSecret("PRIVATE_KEY"), getSecret("PRIVATE_KEY2")],
-            saveDeployments: true,
+            // saveDeployments: true,
         },
         hardhat: {
             chainId: 31337,
@@ -41,8 +42,7 @@ const config: HardhatUserConfig = {
             accounts: [
                 {
                     privateKey: getSecret("PRIVATE_KEY"),
-                    balance:
-                        "10000000000000000000000000000000000000000000000000",
+                    balance: "10000000000000000000000000000000000000000000000000",
                 },
                 {
                     privateKey: getSecret("PRIVATE_KEY"),
@@ -53,41 +53,32 @@ const config: HardhatUserConfig = {
 
         goerli: {
             url: getSecret("GOERLI_URL"),
-            accounts:
-                getSecret("PRIVATE_KEY") !== undefined
-                    ? [getSecret("PRIVATE_KEY")]
-                    : [],
-            verify: {
-                etherscan: {
-                    apiKey: getSecret("ETHERSCAN_API_KEY"),
-                },
-            },
+            accounts: getSecret("PRIVATE_KEY") !== undefined ? [getSecret("PRIVATE_KEY")] : [],
+            // verify: {
+            //     etherscan: {
+            //         apiKey: getSecret("ETHERSCAN_API_KEY"),
+            //     },
+            // },
         },
 
         rinkeby: {
             url: getSecret("RINKEBY_URL"),
-            accounts:
-                getSecret("PRIVATE_KEY") !== undefined
-                    ? [getSecret("PRIVATE_KEY")]
-                    : [],
-            verify: {
-                etherscan: {
-                    apiKey: getSecret("ETHERSCAN_API_KEY"),
-                },
-            },
+            accounts: getSecret("PRIVATE_KEY") !== undefined ? [getSecret("PRIVATE_KEY")] : [],
+            // verify: {
+            //     etherscan: {
+            //         apiKey: getSecret("ETHERSCAN_API_KEY"),
+            //     },
+            // },
         },
 
         mumbai: {
             url: getSecret("MUMBAI_URL"),
-            accounts:
-                getSecret("PRIVATE_KEY") !== undefined
-                    ? [getSecret("PRIVATE_KEY")]
-                    : [],
-            verify: {
-                etherscan: {
-                    apiKey: getSecret("POLYSCAN_API_KEY"),
-                },
-            },
+            accounts: getSecret("PRIVATE_KEY") !== undefined ? [getSecret("PRIVATE_KEY")] : [],
+            // verify: {
+            //     etherscan: {
+            //         apiKey: getSecret("POLYSCAN_API_KEY"),
+            //     },
+            // },
         },
     },
     etherscan: {
@@ -98,14 +89,14 @@ const config: HardhatUserConfig = {
             polygon: getSecret("POLYSCAN_API_KEY"),
         },
     },
-    namedAccounts: {
-        deployer: {
-            default: 0,
-        },
-        user: {
-            default: 1,
-        },
-    },
+    // namedAccounts: {
+    //     deployer: {
+    //         default: 0,
+    //     },
+    //     user: {
+    //         default: 1,
+    //     },
+    // },
 };
 
 export default config;
